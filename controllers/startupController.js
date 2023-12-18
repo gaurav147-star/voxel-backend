@@ -44,7 +44,7 @@ const getDistinctIndustry = async (req, res) => {
 
 const searchIndustry = async (req, res) => {
   try {
-    const { keyword, industry } = req.query;
+    const { keyword } = req.query;
     let query = {};
 
     if (keyword) {
@@ -52,13 +52,10 @@ const searchIndustry = async (req, res) => {
         $or: [
           { StartupName: { $regex: keyword, $options: "i" } },
           { CityLocation: { $regex: keyword, $options: "i" } },
+          { IndustryVertical: { $regex: keyword, $options: "i" } },
           // Add more fields as needed for the search
         ],
       };
-    }
-
-    if (industry) {
-      query.IndustryVertical = industry; // Use the updated field name from your schema
     }
 
     const startups = await Startup.find(query);
